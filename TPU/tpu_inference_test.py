@@ -81,8 +81,6 @@ def get_dataset(batch_size, use_cache=False):
         dataset = dataset.cache(f'./tfdatacache/imagenet_val')
     
     return dataset
-import tensorflow.compat.v1 as tf
-tf.disable_v2_behavior()
 
 def tpu_inference(tpu_saved_model_name, batch_size):
 
