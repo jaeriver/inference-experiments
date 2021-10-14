@@ -5,6 +5,7 @@ import tensorflow as tf
 import pandas as pd
 from matplotlib import pyplot as plt
 from tensorflow.keras.models import load_model
+from tensorflow.keras.applications import resnet50
 AUTOTUNE = tf.data.AUTOTUNE
 print("Tensorflow version " + tf.__version__)
 
@@ -60,7 +61,7 @@ def val_preprocessing(record):
     image = tf.image.resize(image, [new_height, new_width], method='bicubic')
     image = tf.image.resize_with_crop_or_pad(image, 224, 224)
     
-    image = models[model_type].preprocess_input(image)
+    image = resnet50.preprocess_input(image)
     
     return image, label, label_text
 
