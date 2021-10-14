@@ -109,18 +109,11 @@ def tpu_inference(tpu_saved_model_name, batch_size):
             display_every = 100
             display_threshold = display_every
             
-            ipname = list(model_tpu.feed_tensors.keys())[0]
-            resname = list(model_tpu.fetch_tensors.keys())[0]
-            
             walltime_start = time.time()
             extend_time = []
             while True:
-                sess_start = time.time()
-                (validation_ds,batch_labels,_) = sess.run(ds_next)
-                
-                model_feed_dict={ipname: validation_ds}
                 start_time =time.time()
-                inf1_results = model_tpu(model_feed_dict)
+                inf1_results = model_tpu.predict(ds)
                 if counter == 0:
                     first_iter_time = time.time() - start_time
                 else:
