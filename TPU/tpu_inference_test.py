@@ -93,6 +93,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
     display_threshold = 0
 
     ds = get_dataset(batch_size)
+    print('predict start')
     yhat_np = model_tpu.predict(ds)
     print(yhat_np)
 #     for batch in ds:
