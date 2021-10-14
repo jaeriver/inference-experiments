@@ -83,30 +83,31 @@ def get_dataset(batch_size, use_cache=False):
     return dataset
 
 def tpu_inference(tpu_saved_model_name, batch_size):
-    walltime_start = time.time()
-    model_tpu = load_model(tpu_saved_model_name)
+    with.tpu_strategy.scope():
+        walltime_start = time.time()
+        model_tpu = load_model(tpu_saved_model_name)
 
-    first_iter_time = 0
-    iter_times = []
-    pred_labels = []
-    actual_labels = []
-    display_threshold = 0
+        first_iter_time = 0
+        iter_times = []
+        pred_labels = []
+        actual_labels = []
+        display_threshold = 0
 
-    ds = get_dataset(batch_size)
-    print('predict start')
-    yhat_np = model_tpu.predict(ds)
-    print(yhat_np)
-        
-    iter_times = np.array(iter_times)
-    acc_inf1 =''
-    results = pd.DataFrame(columns = [f'tpu_{batch_size}'])
-    results.loc['batch_size']              = [batch_size]
-    results.loc['accuracy']                = [acc_inf1]
-    results.loc['first_prediction_time']   = [first_iter_time]
-    results.loc['average_prediction_time'] = [np.mean(iter_times)]
-    results.loc['wall_time']               = [time.time() - walltime_start]
+        ds = get_dataset(batch_size)
+        print('predict start')
+        yhat_np = model_tpu.predict(ds)
+        print(yhat_np)
 
-    return results, iter_times
+        iter_times = np.array(iter_times)
+        acc_inf1 =''
+        results = pd.DataFrame(columns = [f'tpu_{batch_size}'])
+        results.loc['batch_size']              = [batch_size]
+        results.loc['accuracy']                = [acc_inf1]
+        results.loc['first_prediction_time']   = [first_iter_time]
+        results.loc['average_prediction_time'] = [np.mean(iter_times)]
+        results.loc['wall_time']               = [time.time() - walltime_start]
+
+        return results, iter_times
 
 batch_list = [128]
 model_type = 'resnet50'
