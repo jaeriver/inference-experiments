@@ -83,7 +83,7 @@ def get_dataset(batch_size, use_cache=False):
     return dataset
 
 def tpu_inference(tpu_saved_model_name, batch_size):
-
+    walltime_start = time.time()
     model_tpu = load_model(tpu_saved_model_name)
 
     first_iter_time = 0
@@ -96,9 +96,6 @@ def tpu_inference(tpu_saved_model_name, batch_size):
     print('predict start')
     yhat_np = model_tpu.predict(ds)
     print(yhat_np)
-#     for batch in ds:
-#         yhat_np = model_tpu.predict(batch,steps=3)
-#         print(yhat_np)
         
     iter_times = np.array(iter_times)
     acc_inf1 =''
