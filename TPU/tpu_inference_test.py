@@ -83,7 +83,7 @@ def get_dataset(batch_size, use_cache=False):
     return dataset
 
 def tpu_inference(tpu_saved_model_name, batch_size):
-    with.tpu_strategy.scope():
+    with tpu_strategy.scope():
         walltime_start = time.time()
         model_tpu = load_model(tpu_saved_model_name)
 
