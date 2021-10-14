@@ -18,12 +18,12 @@ assert PROJECT, 'For this part, you need a GCP project. Head to http://console.c
 assert re.search(r'gs://.+', BUCKET), 'For this part, you need a GCS bucket. Head to http://console.cloud.google.com/storage and create one.'
 
 # detect TPUs
-#tpu = tf.distribute.cluster_resolver.TPUClusterResolver.connect() # TPU detection
+#tpu = tf.distribute.cluster_resolver.TPUClusterResolver.connect('jg-tpu') # TPU detection
 #strategy = tf.distribute.TPUStrategy(tpu)
 #print("Number of accelerators: ", strategy.num_replicas_in_sync)
 
 # Google TPU VM
-cluster_resolver = tf.distribute.cluster_resolver.TPUClusterResolver(tpu='jg-tpu1')
+cluster_resolver = tf.distribute.cluster_resolver.TPUClusterResolver(tpu='jg-tpu')
 tf.config.experimental_connect_to_host(cluster_resolver.master())
 tf.tpu.experimental.initialize_tpu_system(cluster_resolver)
 tpu_strategy = tf.distribute.experimental.TPUStrategy(cluster_resolver)
@@ -92,7 +92,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
     actual_labels = []
     display_threshold = 0
 
-    ds = get_dataset(user_batch_size, use_cache)
+    ds = get_dataset(batch_size)
 
     ds_iter = ds.make_initializable_iterator()
     ds_next = ds_iter.get_next()
