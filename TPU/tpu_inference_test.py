@@ -95,10 +95,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
     ds = get_dataset(batch_size)
 
     for batch in ds:
-        print(batch)
-        x_tf, indices_tf = batch
-        
-        yhat_np = model.predict(x_tf)
+        yhat_np = model.predict(batch)
         print(yhat_np)
         
     iter_times = np.array(iter_times)
