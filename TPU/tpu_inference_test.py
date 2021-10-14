@@ -96,41 +96,13 @@ def tpu_inference(tpu_saved_model_name, batch_size):
 
     ds = get_dataset(batch_size)
 
-    ds_iter = ds.make_initializable_iterator()
-    ds_next = ds_iter.get_next()
-    ds_init_op = ds_iter.initializer
-
-    with tf.Session() as sess:
-        try:
-            sess.run(ds_init_op)
-            counter = 0
-            
-            total_datas = 1000
-            display_every = 100
-            display_threshold = display_every
-            
-            walltime_start = time.time()
-            extend_time = []
-            while True:
-                start_time =time.time()
-                inf1_results = model_tpu.predict(ds)
-                if counter == 0:
-                    first_iter_time = time.time() - start_time
-                else:
-                    iter_times.append(time.time() - start_time)
-                
-                actual_labels.extend(label for label_list in batch_labels for label in label_list)
-                pred_labels.extend(list(np.argmax(inf1_results[resname], axis=1)))
-            
-                counter+=1
-                break
-        except tf.errors.OutOfRangeError:
-            pass
-    print(actual_labels)
-    print(pred_labels)
-    acc_inf1 = np.sum(np.array(actual_labels) == np.array(pred_labels))/len(actual_labels)
+    for batch in ds:
+        x_tf, indices_tf = batch
+        yhat_np = model.predict(x_tf)
+        print(yhat_np)
+        
     iter_times = np.array(iter_times)
-    
+    acc_inf1 =''
     results = pd.DataFrame(columns = [f'tpu_{batch_size}'])
     results.loc['batch_size']              = [batch_size]
     results.loc['accuracy']                = [acc_inf1]
