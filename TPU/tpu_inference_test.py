@@ -75,11 +75,6 @@ def get_dataset(batch_size, use_cache=False):
     dataset = dataset.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
     dataset = dataset.repeat(count=1)
     
-    if use_cache:
-        shutil.rmtree('tfdatacache', ignore_errors=True)
-        os.mkdir('tfdatacache')
-        dataset = dataset.cache(f'./tfdatacache/imagenet_val')
-    
     return dataset
 
 def tpu_inference(tpu_saved_model_name, batch_size):
@@ -112,7 +107,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
 batch_list = [128]
 model_type = 'resnet50'
 
-tpu_model = f'{model_type}_saved_model'
+tpu_model = f'gs://jg-tpubucket/resnet50_saved_model/resnet50_saved_model'
 
 for batch_size in batch_list:
   opt = {'batch_size': batch_size}
