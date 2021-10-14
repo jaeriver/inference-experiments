@@ -109,8 +109,8 @@ def tpu_inference(tpu_saved_model_name, batch_size):
             display_every = 100
             display_threshold = display_every
             
-            ipname = list(model_inf1.feed_tensors.keys())[0]
-            resname = list(model_inf1.fetch_tensors.keys())[0]
+            ipname = list(model_tpu.feed_tensors.keys())[0]
+            resname = list(model_tpu.fetch_tensors.keys())[0]
             
             walltime_start = time.time()
             extend_time = []
