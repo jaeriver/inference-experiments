@@ -95,7 +95,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
 
     ds = get_dataset(batch_size)
 
-    ds_iter = ds.make_initializable_iterator()
+    ds_iter = ds.v1.data.make_initializable_iterator()
     ds_next = ds_iter.get_next()
     ds_init_op = ds_iter.initializer
 
