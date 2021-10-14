@@ -66,7 +66,7 @@ def val_preprocessing(record):
     return image, label, label_text
 
 def get_dataset(batch_size, use_cache=False):
-    data_dir = '/home/kmubigdatagcp/datasets/images-1000/*'
+    data_dir = 'gs://jg-tpubucket/tf-record/validation-00000-of-00001'
     files = tf.io.gfile.glob(os.path.join(data_dir))
     dataset = tf.data.TFRecordDataset(files)
     
