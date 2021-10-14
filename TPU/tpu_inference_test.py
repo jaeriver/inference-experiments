@@ -105,11 +105,10 @@ def tpu_inference(tpu_saved_model_name, batch_size):
     results.loc['first_prediction_time']   = [first_iter_time]
     results.loc['average_prediction_time'] = [np.mean(iter_times)]
     results.loc['wall_time']               = [time.time() - walltime_start]
-    display(results.T)
 
     return results, iter_times
 
-batch_list = [1]
+batch_list = [128]
 model_type = 'resnet50'
 
 tpu_model = f'{model_type}_saved_model'
@@ -122,7 +121,6 @@ for batch_size in batch_list:
 
   iter_ds = pd.concat([iter_ds, pd.DataFrame(iter_times, columns=[col_name(opt)])], axis=1)
   results = pd.concat([results, res], axis=1)
-
-display(results)
-
+  print(results)
+   
 
