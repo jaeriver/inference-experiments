@@ -79,6 +79,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
     tf.config.experimental_connect_to_host(cluster_resolver.master())
     tf.tpu.experimental.initialize_tpu_system(cluster_resolver)
     tpu_strategy = tf.distribute.TPUStrategy(cluster_resolver)
+    print("Number of accelerators: ", tpu_strategy.num_replicas_in_sync)
     with tpu_strategy.scope():
         walltime_start = time.time()
         first_iter_time = 0
