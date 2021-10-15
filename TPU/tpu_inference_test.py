@@ -88,7 +88,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
         display_threshold = 0
         ds = get_dataset(batch_size)
         tpu_saved_model_name = f'gs://jg-tpubucket/resnet50_saved_model/resnet50_saved_model'
-        
+        load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
         model_tpu = load_model(tpu_saved_model_name)
         
         print('predict start')
