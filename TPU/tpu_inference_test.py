@@ -23,11 +23,7 @@ assert re.search(r'gs://.+', BUCKET), 'For this part, you need a GCS bucket. Hea
 #strategy = tf.distribute.TPUStrategy(tpu)
 #print("Number of accelerators: ", strategy.num_replicas_in_sync)
 
-# Google TPU VM
-cluster_resolver = tf.distribute.cluster_resolver.TPUClusterResolver(tpu='jg-tpu')
-tf.config.experimental_connect_to_host(cluster_resolver.master())
-tf.tpu.experimental.initialize_tpu_system(cluster_resolver)
-tpu_strategy = tf.distribute.experimental.TPUStrategy(cluster_resolver)
+
 
 def deserialize_image_record(record):
     feature_map = {'image/encoded': tf.io.FixedLenFeature([], tf.string, ''),
@@ -78,6 +74,11 @@ def get_dataset(batch_size, use_cache=False):
     return dataset
 
 def tpu_inference(tpu_saved_model_name, batch_size):
+    # Google TPU VM
+    cluster_resolver = tf.distribute.cluster_resolver.TPUClusterResolver(tpu='jg-tpu')
+    tf.config.experimental_connect_to_host(cluster_resolver.master())
+    tf.tpu.experimental.initialize_tpu_system(cluster_resolver)
+    tpu_strategy = tf.distribute.TPUStrategy(cluster_resolver)
     with tpu_strategy.scope():
         walltime_start = time.time()
         first_iter_time = 0
