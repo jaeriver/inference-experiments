@@ -80,15 +80,17 @@ def get_dataset(batch_size, use_cache=False):
 def tpu_inference(tpu_saved_model_name, batch_size):
     with tpu_strategy.scope():
         walltime_start = time.time()
-        model_tpu = load_model(tpu_saved_model_name)
 
         first_iter_time = 0
         iter_times = []
         pred_labels = []
         actual_labels = []
         display_threshold = 0
-
+        tpu_saved_model_name = f'gs://jg-tpubucket/resnet50_saved_model/resnet50_saved_model'
+        
         ds = get_dataset(batch_size)
+        model_tpu = load_model(tpu_saved_model_name)
+        
         print('predict start')
         yhat_np = model_tpu.predict(ds)
         print(yhat_np)
@@ -107,8 +109,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
 batch_list = [128]
 model_type = 'resnet50'
 
-tpu_model = f'gs://jg-tpubucket/resnet50_saved_model/resnet50_saved_model'
-
+tpu_model = ''
 for batch_size in batch_list:
   opt = {'batch_size': batch_size}
   iter_ds = pd.DataFrame()
