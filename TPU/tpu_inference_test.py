@@ -86,9 +86,9 @@ def tpu_inference(tpu_saved_model_name, batch_size):
         pred_labels = []
         actual_labels = []
         display_threshold = 0
+        ds = get_dataset(batch_size)
         tpu_saved_model_name = f'gs://jg-tpubucket/resnet50_saved_model/resnet50_saved_model'
         
-        ds = get_dataset(batch_size)
         model_tpu = load_model(tpu_saved_model_name)
         
         print('predict start')
