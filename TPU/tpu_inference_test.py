@@ -80,7 +80,6 @@ def get_dataset(batch_size, use_cache=False):
 def tpu_inference(tpu_saved_model_name, batch_size):
     with tpu_strategy.scope():
         walltime_start = time.time()
-        tf.compat.v1.disable_eager_execution()
         first_iter_time = 0
         iter_times = []
         pred_labels = []
