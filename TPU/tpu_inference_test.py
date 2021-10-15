@@ -91,20 +91,20 @@ def tpu_inference(tpu_saved_model_name, batch_size):
         load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
         model_tpu = load_model(tpu_saved_model_name,options=load_locally)
         
-    print('predict start')
-    yhat_np = model_tpu.predict(ds)
-    print(yhat_np)
+        print('predict start')
+        yhat_np = model_tpu.predict(ds)
+        print(yhat_np)
 
-    iter_times = np.array(iter_times)
-    acc_inf1 =''
-    results = pd.DataFrame(columns = [f'tpu_{batch_size}'])
-    results.loc['batch_size']              = [batch_size]
-    results.loc['accuracy']                = [acc_inf1]
-    results.loc['first_prediction_time']   = [first_iter_time]
-    results.loc['average_prediction_time'] = [np.mean(iter_times)]
-    results.loc['wall_time']               = [time.time() - walltime_start]
+        iter_times = np.array(iter_times)
+        acc_inf1 =''
+        results = pd.DataFrame(columns = [f'tpu_{batch_size}'])
+        results.loc['batch_size']              = [batch_size]
+        results.loc['accuracy']                = [acc_inf1]
+        results.loc['first_prediction_time']   = [first_iter_time]
+        results.loc['average_prediction_time'] = [np.mean(iter_times)]
+        results.loc['wall_time']               = [time.time() - walltime_start]
 
-    return results, iter_times
+        return results, iter_times
 
 batch_list = [128]
 model_type = 'resnet50'
