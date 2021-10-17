@@ -109,7 +109,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
         tpu_saved_model_name = f'gs://jg-tpubucket/resnet50'
 #         load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
         model_tpu = load_model(tpu_saved_model_name)
-        
+        print(model_tpu.summary())
         print('predict start')
         yhat_np = model_tpu.predict(ds)
         print(yhat_np)
@@ -125,7 +125,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
 
         return results, iter_times
 
-batch_list = [128]
+batch_list = [8]
 model_type = 'resnet50'
 
 tpu_model = ''
