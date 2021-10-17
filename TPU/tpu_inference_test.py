@@ -55,7 +55,7 @@ def val_preprocessing(record):
     new_width = tf.cast(tf.math.rint(width * scale), tf.int32)
     
     image = tf.image.resize(image, [new_height, new_width], method='bicubic')
-    image = tf.image.resize_with_crop_or_pad(image, 224, 224)
+    image = tf.image.resize_with_crop_or_pad(image, 240, 240)
     
     image = resnet50.preprocess_input(image)
     
@@ -106,7 +106,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
         actual_labels = []
         display_threshold = 0
         ds = get_dataset(batch_size)
-        tpu_saved_model_name = f'gs://jg-tpubucket/model/mobilenet_v2'
+        tpu_saved_model_name = f'gs://jg-tpubucket/model/efficientb1'
 #         load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
         model_tpu = load_model(tpu_saved_model_name)
         print(model_tpu.summary())
