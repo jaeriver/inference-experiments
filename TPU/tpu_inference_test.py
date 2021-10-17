@@ -76,7 +76,7 @@ def get_dataset(batch_size, use_cache=False):
 def tpu_inference(tpu_saved_model_name, batch_size):
     # Google TPU VM
     cluster_resolver = tf.distribute.cluster_resolver.TPUClusterResolver(tpu='jg-tpu')
-    tf.config.experimental_connect_to_host(cluster_resolver.master())
+    tf.config.experimental_connect_to_cluster(cluster_resolver)
     tf.tpu.experimental.initialize_tpu_system(cluster_resolver)
     tpu_strategy = tf.distribute.TPUStrategy(cluster_resolver)
     print("Number of accelerators: ", tpu_strategy.num_replicas_in_sync)
