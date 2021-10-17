@@ -1,2 +1,3 @@
-# inference-experiments
-Inference with AWS Inf, EI
+Inference experiments using a variety of hardware.
+- AWS Inferentia
+- Google TPU
