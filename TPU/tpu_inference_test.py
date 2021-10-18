@@ -57,9 +57,9 @@ def val_preprocessing(record):
     image = tf.image.resize(image, [new_height, new_width], method='bicubic')
     image = tf.image.resize_with_crop_or_pad(image, 224, 224)
     
-    image = tf.io.decode_raw(image, tf.uint8)
-    image = tf.cast(image, tf.float32)
-    image = tf.reshape(image, [784])
+#     image = tf.io.decode_raw(image, tf.uint8)
+#     image = tf.cast(image, tf.float32)
+#     image = tf.reshape(image, [784])
 
     label = tf.cast(label, tf.int32)
     image = resnet50.preprocess_input(image)
