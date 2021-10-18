@@ -32,7 +32,7 @@ def deserialize_image_record(record):
     obj = tf.io.parse_single_example(serialized=record, features=feature_map)
     imgdata = obj['image/encoded']
     label = tf.cast(obj['image/class/label'], tf.int32)   
-    label_text = tf.cast(obj['image/class/text'], tf.string)   
+    label_text = tf.cast(obj['image/class/text'], tf.int32)   
     return imgdata, label, label_text
 
 def val_preprocessing(record):
