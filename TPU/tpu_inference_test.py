@@ -101,7 +101,7 @@ def connect_to_tpu(tpu_address: str = None):
         
 def tpu_inference(tpu_saved_model_name, batch_size):
     # Google TPU VM
-    cluster_resolver, tpu_strategy = connect_to_tpu('jg-tpu')
+#     cluster_resolver, tpu_strategy = connect_to_tpu('jg-tpu')
 
     walltime_start = time.time()
     first_iter_time = 0
@@ -110,7 +110,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
     actual_labels = []
     display_threshold = 0
     ds = get_dataset(batch_size)
-    
+    print(ds)
     tpu_saved_model_name = f'gs://jg-tpubucket/resnet50'
 #   load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
     with tpu_strategy.scope():
