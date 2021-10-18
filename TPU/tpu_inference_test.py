@@ -111,16 +111,11 @@ def tpu_inference(tpu_saved_model_name, batch_size):
     actual_labels = []
     display_threshold = 0
     ds = get_dataset(batch_size)
-    DEFAULT_FUNCTION_KEY = "serving_default"
-    
     
     tpu_saved_model_name = f'gs://jg-tpubucket/resnet50'
-#         load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
+#   load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
     with tpu_strategy.scope():
         model_tpu = load_model(tpu_saved_model_name)
-        inference_func = model_tpu.signatures[DEFAULT_FUNCTION_KEY]
-        for batch in ds.take(1):
-            print(inference_func(batch))
     yhat_np = model_tpu.predict(ds)
     print(yhat_np)
 
