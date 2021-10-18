@@ -122,7 +122,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
         else:
             iter_times.append(time.time() - start_time)
         actual_labels.extend(label for label_list in batch_labels for label in label_list)
-        pred_labels.extend(list(np.argmax(yhat_np[resname], axis=1)))
+        pred_labels.extend(list(np.argmax(yhat_np, axis=1)))
         counter+=1
     iter_times = np.array(iter_times)
     acc_inf1 =''
