@@ -26,13 +26,13 @@ assert re.search(r'gs://.+', BUCKET), 'For this part, you need a GCS bucket. Hea
 
 
 def deserialize_image_record(record):
-    feature_map = {'image/encoded': tf.io.FixedLenFeature([], tf.string, ""),
+    feature_map = {'image/encoded': tf.io.FixedLenFeature([], tf.string, ''),
                   'image/class/label': tf.io.FixedLenFeature([1], tf.int64, -1),
-                  'image/class/text': tf.io.FixedLenFeature([], tf.int64, -1)}
+                  'image/class/text': tf.io.FixedLenFeature([], tf.string, '')}
     obj = tf.io.parse_single_example(serialized=record, features=feature_map)
     imgdata = obj['image/encoded']
     label = tf.cast(obj['image/class/label'], tf.int32)   
-    label_text = tf.cast(obj['image/class/text'], tf.int32)   
+    label_text = tf.cast(obj['image/class/text'], tf.string)   
     return imgdata, label, label_text
 
 def val_preprocessing(record):
@@ -60,9 +60,9 @@ def val_preprocessing(record):
     
     
 
-    label = tf.cast(label, tf.int32)
+#     label = tf.cast(label, tf.int32)
     image = resnet50.preprocess_input(image)
-    image = tf.cast(image, tf.float32)
+#     image = tf.cast(image, tf.float32)
     return image, label, label_text
 
 def get_dataset(batch_size, use_cache=False):
