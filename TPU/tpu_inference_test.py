@@ -63,7 +63,6 @@ def val_preprocessing(record):
     label = tf.cast(label, tf.int32)
     image = resnet50.preprocess_input(image)
     image = tf.cast(image, tf.float32)
-    image = tf.reshape(image, [784])
     return image, label, label_text
 
 def get_dataset(batch_size, use_cache=False):
