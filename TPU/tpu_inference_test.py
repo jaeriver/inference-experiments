@@ -98,32 +98,32 @@ def connect_to_tpu(tpu_address: str = None):
 def tpu_inference(tpu_saved_model_name, batch_size):
     # Google TPU VM
     cluster_resolver, tpu_strategy = connect_to_tpu('jg-tpu')
-    with tpu_strategy.scope():
-        walltime_start = time.time()
-        first_iter_time = 0
-        iter_times = []
-        pred_labels = []
-        actual_labels = []
-        display_threshold = 0
-        ds = get_dataset(batch_size)
-        tpu_saved_model_name = f'gs://jg-tpubucket/model/efficientnetb1'
+
+    walltime_start = time.time()
+    first_iter_time = 0
+    iter_times = []
+    pred_labels = []
+    actual_labels = []
+    display_threshold = 0
+    ds = get_dataset(batch_size)
+    tpu_saved_model_name = f'gs://jg-tpubucket/model/efficientnetb1'
 #         load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
-        model_tpu = load_model(tpu_saved_model_name)
-        print(model_tpu.summary())
-        print('predict start')
-        yhat_np = model_tpu.predict(ds)
-        print(yhat_np)
+    model_tpu = load_model(tpu_saved_model_name)
+    print(model_tpu.summary())
+    print('predict start')
+    yhat_np = model_tpu.predict(ds)
+    print(yhat_np)
 
-        iter_times = np.array(iter_times)
-        acc_inf1 =''
-        results = pd.DataFrame(columns = [f'tpu_{batch_size}'])
-        results.loc['batch_size']              = [batch_size]
-        results.loc['accuracy']                = [acc_inf1]
-        results.loc['first_prediction_time']   = [first_iter_time]
-        results.loc['average_prediction_time'] = [np.mean(iter_times)]
-        results.loc['wall_time']               = [time.time() - walltime_start]
+    iter_times = np.array(iter_times)
+    acc_inf1 =''
+    results = pd.DataFrame(columns = [f'tpu_{batch_size}'])
+    results.loc['batch_size']              = [batch_size]
+    results.loc['accuracy']                = [acc_inf1]
+    results.loc['first_prediction_time']   = [first_iter_time]
+    results.loc['average_prediction_time'] = [np.mean(iter_times)]
+    results.loc['wall_time']               = [time.time() - walltime_start]
 
-        return results, iter_times
+    return results, iter_times
 
 batch_list = [8]
 model_type = 'resnet50'
