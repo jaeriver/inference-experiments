@@ -112,9 +112,17 @@ def tpu_inference(tpu_saved_model_name, batch_size):
 #   load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
     with tpu_strategy.scope():
         model_tpu = load_model(tpu_saved_model_name)
-    yhat_np = model_tpu.predict(ds)
-    print(yhat_np)
-
+    counter = 0
+    for batch, batch_labels in ds:
+        start_time = time.time()
+        yhat_np = model_tpu.predict(batch)
+        if counter ==0:
+            first_iter_time = time.time() - start_time
+        else:
+            iter_times.append(time.time() - start_time)
+        actual_labels.extend(label for label_list in batch_labels for label in label_list)
+        pred_labels.extend(list(np.argmax(y_hat[resname], axis=1)))
+        counter+=1
     iter_times = np.array(iter_times)
     acc_inf1 =''
     results = pd.DataFrame(columns = [f'tpu_{batch_size}'])
