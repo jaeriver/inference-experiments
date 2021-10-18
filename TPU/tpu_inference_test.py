@@ -106,7 +106,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
     actual_labels = []
     display_threshold = 0
     ds = get_dataset(batch_size)
-    tpu_saved_model_name = f'gs://jg-tpubucket/model/resnet50'
+    tpu_saved_model_name = f'gs://jg-tpubucket/resnet50'
 #         load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
     model_tpu = load_model(tpu_saved_model_name)
     print(model_tpu.summary())
