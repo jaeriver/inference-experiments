@@ -113,7 +113,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
     with tpu_strategy.scope():
         model_tpu = load_model(tpu_saved_model_name)
     counter = 0
-    resname = list(model_inf1.fetch_tensors.keys())[0]
+    resname = list(model_tpu.fetch_tensors.keys())[0]
     for batch, batch_labels in ds:
         start_time = time.time()
         yhat_np = model_tpu.predict(batch)
