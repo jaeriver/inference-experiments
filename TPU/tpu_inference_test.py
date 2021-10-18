@@ -56,7 +56,7 @@ def val_preprocessing(record):
     new_width = tf.cast(tf.math.rint(width * scale), tf.int32)
     
     image = tf.image.resize(image, [new_height, new_width], method='bicubic')
-    image = tf.image.resize_with_crop_or_pad(image, 224, 224)
+#     image = tf.image.resize_with_crop_or_pad(image, 224, 224)
     
     
 
