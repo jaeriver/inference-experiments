@@ -26,9 +26,9 @@ assert re.search(r'gs://.+', BUCKET), 'For this part, you need a GCS bucket. Hea
 
 
 def deserialize_image_record(record):
-    feature_map = {'image/encoded': tf.io.FixedLenFeature([], tf.string, ''),
+    feature_map = {'image/encoded': tf.io.FixedLenFeature([], tf.int32, -1),
                   'image/class/label': tf.io.FixedLenFeature([1], tf.int64, -1),
-                  'image/class/text': tf.io.FixedLenFeature([], tf.string, '')}
+                  'image/class/text': tf.io.FixedLenFeature([], tf.int32, -1)}
     obj = tf.io.parse_single_example(serialized=record, features=feature_map)
     imgdata = obj['image/encoded']
     label = tf.cast(obj['image/class/label'], tf.int32)   
