@@ -125,10 +125,10 @@ def tpu_inference(tpu_saved_model_name, batch_size):
         pred_labels.extend(list(np.argmax(yhat_np, axis=1)))
         counter+=1
     iter_times = np.array(iter_times)
-    acc_inf1 =''
+    acc_tpu = np.sum(np.array(actual_labels) == np.array(pred_labels))/len(actual_labels)
     results = pd.DataFrame(columns = [f'tpu_{batch_size}'])
     results.loc['batch_size']              = [batch_size]
-    results.loc['accuracy']                = [acc_inf1]
+    results.loc['accuracy']                = [acc_tpu]
     results.loc['first_prediction_time']   = [first_iter_time]
     results.loc['average_prediction_time'] = [np.mean(iter_times)]
     results.loc['wall_time']               = [time.time() - walltime_start]
