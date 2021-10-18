@@ -112,8 +112,8 @@ def tpu_inference(tpu_saved_model_name, batch_size):
 #   load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
     with tpu_strategy.scope():
         model_tpu = load_model(tpu_saved_model_name)
-        yhat_np = model_tpu.predict(ds)
-        print(yhat_np)
+    yhat_np = model_tpu.predict(ds)
+    print(yhat_np)
 
     iter_times = np.array(iter_times)
     acc_inf1 =''
