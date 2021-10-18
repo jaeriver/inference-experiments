@@ -38,6 +38,9 @@ def deserialize_image_record(record):
 def val_preprocessing(record):
     imgdata, label, label_text = deserialize_image_record(record)
     label -= 1
+    image = tf.io.decode_raw(image, tf.uint8)
+    image = tf.cast(image, tf.float32)
+    image = tf.reshape(image, [784])
     image = tf.io.decode_jpeg(imgdata, channels=3, 
                               fancy_upscaling=False, 
                               dct_method='INTEGER_FAST')
@@ -57,9 +60,7 @@ def val_preprocessing(record):
     image = tf.image.resize(image, [new_height, new_width], method='bicubic')
     image = tf.image.resize_with_crop_or_pad(image, 224, 224)
     
-#     image = tf.io.decode_raw(image, tf.uint8)
-#     image = tf.cast(image, tf.float32)
-#     image = tf.reshape(image, [784])
+    
 
     label = tf.cast(label, tf.int32)
     image = resnet50.preprocess_input(image)
