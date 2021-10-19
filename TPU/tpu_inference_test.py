@@ -107,11 +107,12 @@ def tpu_inference(tpu_saved_model_name, batch_size):
     actual_labels = []
     display_threshold = 0
     ds = get_dataset(batch_size)
-    print(ds)
     tpu_saved_model_name = f'gs://jg-tpubucket/resnet50'
 #   load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
+    load_start = time.time()
     with tpu_strategy.scope():
         model_tpu = load_model(tpu_saved_model_name)
+    load_time = time.time() - load_start
     counter = 0
 #     resname = list(model_tpu.fetch_tensors.keys())[0]
     for batch, batch_labels in ds:
@@ -131,11 +132,12 @@ def tpu_inference(tpu_saved_model_name, batch_size):
     results.loc['accuracy']                = [acc_tpu]
     results.loc['first_prediction_time']   = [first_iter_time]
     results.loc['average_prediction_time'] = [np.mean(iter_times)]
+    results.loc['load_time']               = [load_time]
     results.loc['wall_time']               = [time.time() - walltime_start]
 
     return results, iter_times
 
-batch_list = [8]
+batch_list = [1,2,4,8,16,32,64]
 model_type = 'resnet50'
 
 tpu_model = ''
