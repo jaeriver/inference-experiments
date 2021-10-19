@@ -70,7 +70,7 @@ def val_preprocessing(record):
     return image, label
 
 def get_dataset(batch_size, use_cache=False):
-    data_dir = 'gs://jg-tpubucket/tf-record/images-1000/*'
+    data_dir = 'gs://jg-tpubucket/tf-record/images-50000/*'
     files = tf.io.gfile.glob(os.path.join(data_dir))
     dataset = tf.data.TFRecordDataset(files)
     
@@ -148,7 +148,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
 
         return results, iter_times
 
-batch_list = [256,128,64,32,16,8,4,2,1]
+batch_list = [512,256,128,64,32,16,8,4,2,1]
 
 tpu_model = ''
 for batch_size in batch_list:
