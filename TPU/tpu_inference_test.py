@@ -55,7 +55,7 @@ assert re.search(r'gs://.+', BUCKET), 'For this part, you need a GCS bucket. Hea
 
 parser = argparse.ArgumentParser()
 model_type = parser.add_argument('-m','--model_type', required=True)
-print(mode_type)
+print(model_type)
 batch_list = parser.add_argument('-l', '--batch_list',
                       nargs='+', type=list,
                       help='<Required> Set flag',
