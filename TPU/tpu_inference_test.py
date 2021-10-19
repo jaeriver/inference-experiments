@@ -22,7 +22,27 @@ from tensorflow.keras.applications import (
 )
 import sys
 
-
+models = {
+    'xception':xception,
+    'vgg16':vgg16,
+    'vgg19':vgg19,
+    'resnet50':resnet50,
+    'resnet101':resnet,
+    'resnet152':resnet,
+    'resnet50_v2':resnet_v2,
+    'resnet101_v2':resnet_v2,
+    'resnet152_v2':resnet_v2,
+    'inception_v3':inception_v3,
+    'inception_resnet_v2':inception_resnet_v2,
+    'mobilenet':mobilenet,
+    'densenet121':densenet,
+    'densenet169':densenet,
+    'densenet201':densenet,
+    'nasnetlarge':nasnet,
+    'nasnetmobile':nasnet,
+    'mobilenet_v2':mobilenet_v2,
+    'efficientnetb7':efficientnet
+}
 
 PROJECT = "jg-project-328708" #@param {type:"string"}
 BUCKET = "gs://jg-tpubucket"  #@param {type:"string", default:"jddj"}
@@ -32,6 +52,12 @@ MODEL_VERSION = "v1" #@param {type:"string"}
 assert PROJECT, 'For this part, you need a GCP project. Head to http://console.cloud.google.com/ and create one.'
 assert re.search(r'gs://.+', BUCKET), 'For this part, you need a GCS bucket. Head to http://console.cloud.google.com/storage and create one.'
 
+model_type = parser.add_argument('m','--model_type', required=True)
+
+batch_list = parser.add_argument('-l', '--batch_list',
+                      nargs='+',
+                      help='<Required> Set flag',
+                      required=True)
 
 def deserialize_image_record(record):
     feature_map = {'image/encoded': tf.io.FixedLenFeature([], tf.string, ''),
@@ -65,7 +91,7 @@ def val_preprocessing(record):
     image = tf.image.resize_with_crop_or_pad(image, 224, 224)
 
     label = tf.cast(label, tf.int32)
-    image = vgg16.preprocess_input(image)
+    image = models[model_type].preprocess_input(image)
     image = tf.cast(image, tf.float32)
     return image, label
 
@@ -104,8 +130,6 @@ def connect_to_tpu(tpu_address: str = None):
             mirrored_strategy = tf.distribute.MirroredStrategy()
             return None, mirrored_strategy
 
-        
-model_type = str(sys.argv[1])
 
 def tpu_inference(tpu_saved_model_name, batch_size):
     # Google TPU VM
@@ -148,7 +172,6 @@ def tpu_inference(tpu_saved_model_name, batch_size):
 
         return results, iter_times
 
-batch_list = [16384 ,8192, 2048]
 
 tpu_model = ''
 for batch_size in batch_list:
@@ -157,7 +180,8 @@ for batch_size in batch_list:
   results = pd.DataFrame()
   print(f'{batch_size} start')
   res, iter_times = tpu_inference(tpu_model, batch_size)
-  col_name = lambda opt: f'inf1_{batch_size}'
+  col_name = lambda opt: f'tpu_{model_type}_{batch_size}'
+  
   iter_ds = pd.concat([iter_ds, pd.DataFrame(iter_times, columns=[col_name(opt)])], axis=1)
   results = pd.concat([results, res], axis=1)
   print(results)
