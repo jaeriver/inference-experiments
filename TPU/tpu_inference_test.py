@@ -57,7 +57,7 @@ parser = argparse.ArgumentParser()
 model_type = parser.add_argument('-m','--model_type', required=True)
 
 batch_list = parser.add_argument('-l', '--batch_list',
-                      nargs='+', type='list',
+                      nargs='+', type=list,
                       help='<Required> Set flag',
                       required=True)
 print(model_type)
