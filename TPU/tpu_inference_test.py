@@ -148,7 +148,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
 
         return results, iter_times
 
-batch_list = [512,256,128,64,32,16,8,4,2,1]
+batch_list = [16384 ,8192, 2048]
 
 tpu_model = ''
 for batch_size in batch_list:
