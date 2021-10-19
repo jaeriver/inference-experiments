@@ -184,7 +184,7 @@ for batch_size in batch_list:
   iter_ds = pd.DataFrame()
   results = pd.DataFrame()
   print(f'{batch_size} start')
-  res, iter_times = tpu_inference(tpu_model, batch_size)
+  res, iter_times = tpu_inference(tpu_model, int(batch_size))
   col_name = lambda opt: f'tpu_{model_type}_{batch_size}'
   
   iter_ds = pd.concat([iter_ds, pd.DataFrame(iter_times, columns=[col_name(opt)])], axis=1)
