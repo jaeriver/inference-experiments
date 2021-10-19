@@ -42,12 +42,12 @@ models_detail = {
     'nasnetmobile': nasnet.NASNetLarge(weights='imagenet'),
     'nasnetlarge': nasnet.NASNetMobile(weights='imagenet'),
     'mobilenet_v2': mobilenet_v2.MobileNetV2(weights='imagenet'),
-    'efficientnetb1': efficientnet.EfficientNetB1(weights='imagenet')
-    'efficientnetb2': efficientnet.EfficientNetB2(weights='imagenet')
-    'efficientnetb3': efficientnet.EfficientNetB3(weights='imagenet')
-    'efficientnetb4': efficientnet.EfficientNetB4(weights='imagenet')
-    'efficientnetb5': efficientnet.EfficientNetB5(weights='imagenet')
-    'efficientnetb6': efficientnet.EfficientNetB6(weights='imagenet')
+    'efficientnetb1': efficientnet.EfficientNetB1(weights='imagenet'),
+    'efficientnetb2': efficientnet.EfficientNetB2(weights='imagenet'),
+    'efficientnetb3': efficientnet.EfficientNetB3(weights='imagenet'),
+    'efficientnetb4': efficientnet.EfficientNetB4(weights='imagenet'),
+    'efficientnetb5': efficientnet.EfficientNetB5(weights='imagenet'),
+    'efficientnetb6': efficientnet.EfficientNetB6(weights='imagenet'),
     'efficientnetb7': efficientnet.EfficientNetB7(weights='imagenet')
 }
 
