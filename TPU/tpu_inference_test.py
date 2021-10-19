@@ -137,7 +137,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
 
         return results, iter_times
 
-batch_list = [1,2,4,8,16,32,64]
+batch_list = [64,32,16,8,4,2,1]
 model_type = 'resnet50'
 
 tpu_model = ''
