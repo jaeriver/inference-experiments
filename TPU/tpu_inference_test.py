@@ -65,7 +65,7 @@ def val_preprocessing(record):
     image = tf.image.resize_with_crop_or_pad(image, 224, 224)
 
     label = tf.cast(label, tf.int32)
-    image = resnet50.preprocess_input(image)
+    image = vgg16.preprocess_input(image)
     image = tf.cast(image, tf.float32)
     return image, label
 
@@ -148,7 +148,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
 
         return results, iter_times
 
-batch_list = [64,32,16,8,4,2,1]
+batch_list = [256,128,64,32,16,8,4,2,1]
 
 tpu_model = ''
 for batch_size in batch_list:
