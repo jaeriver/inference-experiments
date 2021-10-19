@@ -53,6 +53,7 @@ MODEL_VERSION = "v1" #@param {type:"string"}
 assert PROJECT, 'For this part, you need a GCP project. Head to http://console.cloud.google.com/ and create one.'
 assert re.search(r'gs://.+', BUCKET), 'For this part, you need a GCS bucket. Head to http://console.cloud.google.com/storage and create one.'
 
+parser = argparse.ArgumentParser()
 model_type = parser.add_argument('m','--model_type', required=True)
 
 batch_list = parser.add_argument('-l', '--batch_list',
