@@ -5,24 +5,32 @@ import tensorflow as tf
 import pandas as pd
 from matplotlib import pyplot as plt
 from tensorflow.keras.models import load_model
-from tensorflow.keras.applications import resnet50
-AUTOTUNE = tf.data.AUTOTUNE
-print("Tensorflow version " + tf.__version__)
+from tensorflow.keras.applications import (
+    xception,
+    vgg16,
+    vgg19,
+    resnet,
+    resnet50,
+    resnet_v2,
+    inception_v3,
+    inception_resnet_v2,
+    mobilenet,
+    densenet,
+    nasnet,
+    mobilenet_v2,
+    efficientnet
+)
+import sys
+
+
 
 PROJECT = "jg-project-328708" #@param {type:"string"}
 BUCKET = "gs://jg-tpubucket"  #@param {type:"string", default:"jddj"}
 NEW_MODEL = True #@param {type:"boolean"}
-MODEL_NAME = "resnet50" #@param {type:"string"}
 MODEL_VERSION = "v1" #@param {type:"string"}
 
 assert PROJECT, 'For this part, you need a GCP project. Head to http://console.cloud.google.com/ and create one.'
 assert re.search(r'gs://.+', BUCKET), 'For this part, you need a GCS bucket. Head to http://console.cloud.google.com/storage and create one.'
-
-# detect TPUs
-#tpu = tf.distribute.cluster_resolver.TPUClusterResolver.connect('jg-tpu') # TPU detection
-#strategy = tf.distribute.TPUStrategy(tpu)
-#print("Number of accelerators: ", strategy.num_replicas_in_sync)
-
 
 
 def deserialize_image_record(record):
@@ -95,7 +103,10 @@ def connect_to_tpu(tpu_address: str = None):
             print("WARNING: No TPU detected.")
             mirrored_strategy = tf.distribute.MirroredStrategy()
             return None, mirrored_strategy
+
         
+model_type = str(sys.argv[1])
+
 def tpu_inference(tpu_saved_model_name, batch_size):
     # Google TPU VM
     cluster_resolver, tpu_strategy = connect_to_tpu('jg-tpu')
@@ -107,7 +118,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
     actual_labels = []
     display_threshold = 0
     ds = get_dataset(batch_size)
-    tpu_saved_model_name = f'gs://jg-tpubucket/resnet50'
+    tpu_saved_model_name = f'gs://jg-tpubucket/model/{model_type}'
 #   load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
     load_start = time.time()
     with tpu_strategy.scope():
@@ -138,7 +149,6 @@ def tpu_inference(tpu_saved_model_name, batch_size):
         return results, iter_times
 
 batch_list = [64,32,16,8,4,2,1]
-model_type = 'resnet50'
 
 tpu_model = ''
 for batch_size in batch_list:
