@@ -112,30 +112,30 @@ def tpu_inference(tpu_saved_model_name, batch_size):
     load_start = time.time()
     with tpu_strategy.scope():
         model_tpu = load_model(tpu_saved_model_name)
-    load_time = time.time() - load_start
-    counter = 0
-#     resname = list(model_tpu.fetch_tensors.keys())[0]
-    for batch, batch_labels in ds:
-        start_time = time.time()
-        yhat_np = model_tpu.predict(batch)
-        if counter ==0:
-            first_iter_time = time.time() - start_time
-        else:
-            iter_times.append(time.time() - start_time)
-        actual_labels.extend(label for label_list in batch_labels for label in label_list)
-        pred_labels.extend(list(np.argmax(yhat_np, axis=1)))
-        counter+=1
-    iter_times = np.array(iter_times)
-    acc_tpu = np.sum(np.array(actual_labels) == np.array(pred_labels))/len(actual_labels)
-    results = pd.DataFrame(columns = [f'tpu_{batch_size}'])
-    results.loc['batch_size']              = [batch_size]
-    results.loc['accuracy']                = [acc_tpu]
-    results.loc['first_prediction_time']   = [first_iter_time]
-    results.loc['average_prediction_time'] = [np.mean(iter_times)]
-    results.loc['load_time']               = [load_time]
-    results.loc['wall_time']               = [time.time() - walltime_start]
+        load_time = time.time() - load_start
+        counter = 0
+    #     resname = list(model_tpu.fetch_tensors.keys())[0]
+        for batch, batch_labels in ds:
+            start_time = time.time()
+            yhat_np = model_tpu.predict(batch)
+            if counter ==0:
+                first_iter_time = time.time() - start_time
+            else:
+                iter_times.append(time.time() - start_time)
+            actual_labels.extend(label for label_list in batch_labels for label in label_list)
+            pred_labels.extend(list(np.argmax(yhat_np, axis=1)))
+            counter+=1
+        iter_times = np.array(iter_times)
+        acc_tpu = np.sum(np.array(actual_labels) == np.array(pred_labels))/len(actual_labels)
+        results = pd.DataFrame(columns = [f'tpu_{batch_size}'])
+        results.loc['batch_size']              = [batch_size]
+        results.loc['accuracy']                = [acc_tpu]
+        results.loc['first_prediction_time']   = [first_iter_time]
+        results.loc['average_prediction_time'] = [np.mean(iter_times)]
+        results.loc['load_time']               = [load_time]
+        results.loc['wall_time']               = [time.time() - walltime_start]
 
-    return results, iter_times
+        return results, iter_times
 
 batch_list = [1,2,4,8,16,32,64]
 model_type = 'resnet50'
