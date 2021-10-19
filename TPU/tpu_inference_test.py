@@ -54,14 +54,17 @@ assert PROJECT, 'For this part, you need a GCP project. Head to http://console.c
 assert re.search(r'gs://.+', BUCKET), 'For this part, you need a GCS bucket. Head to http://console.cloud.google.com/storage and create one.'
 
 parser = argparse.ArgumentParser()
-model_type = parser.add_argument('-m','--model_type', required=True)
-print(model_type)
-batch_list = parser.add_argument('-l', '--batch_list',
+parser.add_argument('-m','--model_type', required=True)
+print(parser)
+parser.add_argument('-l', '--batch_list',
                       nargs='+', type=list,
                       help='<Required> Set flag',
                       required=True)
+model_type = parser.parse_args().model_type
 print(model_type)
+batch_list = parser.parse_args().batch_list
 print(batch_list)
+
 def deserialize_image_record(record):
     feature_map = {'image/encoded': tf.io.FixedLenFeature([], tf.string, ''),
                   'image/class/label': tf.io.FixedLenFeature([1], tf.int64, -1)}
