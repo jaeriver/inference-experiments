@@ -57,10 +57,11 @@ parser = argparse.ArgumentParser()
 model_type = parser.add_argument('-m','--model_type', required=True)
 
 batch_list = parser.add_argument('-l', '--batch_list',
-                      nargs='+',
+                      nargs='+', type='list',
                       help='<Required> Set flag',
                       required=True)
-
+print(model_type)
+print(batch_list)
 def deserialize_image_record(record):
     feature_map = {'image/encoded': tf.io.FixedLenFeature([], tf.string, ''),
                   'image/class/label': tf.io.FixedLenFeature([1], tf.int64, -1)}
