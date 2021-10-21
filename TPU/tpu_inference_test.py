@@ -148,7 +148,10 @@ def tpu_inference(tpu_saved_model_name, batch_size):
     iter_times = []
     pred_labels = []
     actual_labels = []
-    display_threshold = 0
+    total_datas = 50000
+    display_every = 1000
+    display_threshold = display_every
+    
     ds = get_dataset(batch_size)
     tpu_saved_model_name = f'gs://jg-tpubucket/model/{model_type}'
 #   load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
@@ -167,6 +170,11 @@ def tpu_inference(tpu_saved_model_name, batch_size):
                 iter_times.append(time.time() - start_time)
             actual_labels.extend(label for label_list in batch_labels for label in label_list)
             pred_labels.extend(list(np.argmax(yhat_np, axis=1)))
+            
+            if counter*user_batch_size >= display_threshold:
+                print(f'Images {counter*batch_size}/{total_datas}. Average i/s {np.mean(batch_size/np.array(iter_times[-display_every:]))}')
+                display_threshold+=display_every
+
             counter+=1
         iter_times = np.array(iter_times)
         acc_tpu = np.sum(np.array(actual_labels) == np.array(pred_labels))/len(actual_labels)
