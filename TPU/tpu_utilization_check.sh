@@ -1,4 +1,1 @@
-gcloud compute tpus create jg-tpu \
-            --zone=us-central1-b \
-            --accelerator-type='v2-8' \
-            --version='2.5.0'
+capture_tpu_profile --tpu=jg-tpu --monitoring_level=2 --num_queries 10000
