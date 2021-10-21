@@ -171,7 +171,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
             actual_labels.extend(label for label_list in batch_labels for label in label_list)
             pred_labels.extend(list(np.argmax(yhat_np, axis=1)))
             
-            if counter*user_batch_size >= display_threshold:
+            if counter*batch_size >= display_threshold:
                 print(f'Images {counter*batch_size}/{total_datas}. Average i/s {np.mean(batch_size/np.array(iter_times[-display_every:]))}')
                 display_threshold+=display_every
 
