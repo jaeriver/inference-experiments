@@ -141,7 +141,7 @@ def connect_to_tpu(tpu_address: str = None):
 
 def tpu_inference(tpu_saved_model_name, batch_size):
     # Google TPU VM
-    cluster_resolver, tpu_strategy = connect_to_tpu('jg-tpu')
+    cluster_resolver, tpu_strategy = connect_to_tpu('localhost')
 
     walltime_start = time.time()
     first_iter_time = 0
