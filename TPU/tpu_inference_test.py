@@ -23,24 +23,24 @@ import sys
 import argparse
 
 models = {
-    'xception':xception,
+#     'xception':xception,
     'vgg16':vgg16,
-    'vgg19':vgg19,
+#     'vgg19':vgg19,
     'resnet50':resnet50,
-    'resnet101':resnet,
-    'resnet152':resnet,
-    'resnet50_v2':resnet_v2,
-    'resnet101_v2':resnet_v2,
-    'resnet152_v2':resnet_v2,
-    'inception_v3':inception_v3,
-    'inception_resnet_v2':inception_resnet_v2,
-    'mobilenet':mobilenet,
-    'densenet121':densenet,
-    'densenet169':densenet,
-    'densenet201':densenet,
-    'nasnetlarge':nasnet,
-    'nasnetmobile':nasnet,
-    'mobilenet_v2':mobilenet_v2,
+#     'resnet101':resnet,
+#     'resnet152':resnet,
+#     'resnet50_v2':resnet_v2,
+#     'resnet101_v2':resnet_v2,
+#     'resnet152_v2':resnet_v2,
+#     'inception_v3':inception_v3,
+#     'inception_resnet_v2':inception_resnet_v2,
+#     'mobilenet':mobilenet,
+#     'densenet121':densenet,
+#     'densenet169':densenet,
+#     'densenet201':densenet,
+#     'nasnetlarge':nasnet,
+#     'nasnetmobile':nasnet,
+#     'mobilenet_v2':mobilenet_v2,
 }
 
 PROJECT = "jg-project-328708" #@param {type:"string"}
@@ -102,7 +102,7 @@ def val_preprocessing(record):
     return image, label
 
 def get_dataset(batch_size, use_cache=False):
-    data_dir = 'gs://jg-tpubucket/tf-record/images-50000/*'
+    data_dir = 'gs://jg-tpubucket/tf-record/images-1000/*'
     files = tf.io.gfile.glob(os.path.join(data_dir))
     dataset = tf.data.TFRecordDataset(files)
     
