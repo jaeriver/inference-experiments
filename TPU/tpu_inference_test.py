@@ -17,8 +17,7 @@ from tensorflow.keras.applications import (
     mobilenet,
     densenet,
     nasnet,
-    mobilenet_v2,
-    efficientnet
+    mobilenet_v2
 )
 import sys
 import argparse
@@ -42,7 +41,6 @@ models = {
     'nasnetlarge':nasnet,
     'nasnetmobile':nasnet,
     'mobilenet_v2':mobilenet_v2,
-    'efficientnetb7':efficientnet
 }
 
 PROJECT = "jg-project-328708" #@param {type:"string"}
