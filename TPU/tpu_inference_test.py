@@ -104,7 +104,7 @@ def val_preprocessing(record):
     return image, label
 
 def get_dataset(batch_size, use_cache=False):
-    data_dir = 'gs://jg-tpubucket/tf-record/images-1000/*'
+    data_dir = 'gs://jg-tpubucket/tf-record/images-50000/*'
     files = tf.io.gfile.glob(os.path.join(data_dir))
     dataset = tf.data.TFRecordDataset(files)
     
