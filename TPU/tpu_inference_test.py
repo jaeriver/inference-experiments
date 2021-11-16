@@ -93,7 +93,7 @@ def val_preprocessing(record):
     new_width = tf.cast(tf.math.rint(width * scale), tf.int32)
     
     image = tf.image.resize(image, [new_height, new_width], method='bicubic')
-    if model_type =='inception_resnet_v2':
+    if "inception" in model_type:
         image = tf.image.resize_with_crop_or_pad(image, 299, 299)
     else:
         image = tf.image.resize_with_crop_or_pad(image, 224, 224)
