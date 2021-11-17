@@ -151,6 +151,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
     total_datas = 50000
     display_every = 1000
     display_threshold = display_every
+    warm_up = 10
     
     ds = get_dataset(batch_size)
     tpu_saved_model_name = f'gs://jg-tpubucket/model/{model_type}'
@@ -162,6 +163,11 @@ def tpu_inference(tpu_saved_model_name, batch_size):
         counter = 0
     #     resname = list(model_tpu.fetch_tensors.keys())[0]
         for batch, batch_labels in ds:
+            
+            
+            if counter == 0:
+                for i in range(warm_up):
+                    _ = model_tpu.predict(batch)
             start_time = time.time()
             yhat_np = model_tpu.predict(batch)
             if counter ==0:
