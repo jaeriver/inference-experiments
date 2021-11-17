@@ -168,6 +168,7 @@ def tpu_inference(tpu_saved_model_name, batch_size):
             if counter == 0:
                 for i in range(warm_up):
                     _ = model_tpu.predict(batch)
+                    
             start_time = time.time()
             yhat_np = model_tpu.predict(batch)
             if counter ==0:
