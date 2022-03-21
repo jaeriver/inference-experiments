@@ -114,39 +114,40 @@ def inference(saved_model_name, batch_size):
     model = load_model(saved_model_name)
     load_time = time.time() - load_start
     counter = 0
-    for batch, batch_labels in ds:
-        if counter == 0:
-            for i in range(warm_up):
-                _ = model.predict(batch)
+    with tf.device("/device:GPU:0"):
+        for batch, batch_labels in ds:
+            if counter == 0:
+                for i in range(warm_up):
+                    _ = model.predict(batch)
 
-        start_time = time.time()
-        yhat_np = model.predict(batch)
-        if counter ==0:
-            first_iter_time = time.time() - start_time
-        else:
-            iter_times.append(time.time() - start_time)
-        actual_labels.extend(label for label_list in batch_labels for label in label_list)
-        pred_labels.extend(list(np.argmax(yhat_np, axis=1)))
-        
-        if counter*batch_size >= display_threshold:
-            print(f'Images {counter*batch_size}/{total_datas}. Average i/s {np.mean(batch_size/np.array(iter_times[-display_every:]))}')
-            display_threshold+=display_every
+            start_time = time.time()
+            yhat_np = model.predict(batch)
+            if counter ==0:
+                first_iter_time = time.time() - start_time
+            else:
+                iter_times.append(time.time() - start_time)
+            actual_labels.extend(label for label_list in batch_labels for label in label_list)
+            pred_labels.extend(list(np.argmax(yhat_np, axis=1)))
 
-        counter+=1
-        # only test 10 times
-        if counter == 10:
-            break
-    iter_times = np.array(iter_times)
-    acc_tpu = np.sum(np.array(actual_labels) == np.array(pred_labels))/len(actual_labels)
-    results = pd.DataFrame(columns = [f'tpu_{model_type}_{batch_size}'])
-    results.loc['batch_size']              = [batch_size]
-    results.loc['accuracy']                = [acc_tpu]
-    results.loc['first_prediction_time']   = [first_iter_time]
-    results.loc['average_prediction_time'] = [np.mean(iter_times)]
-    results.loc['load_time']               = [load_time]
-    results.loc['wall_time']               = [time.time() - walltime_start]
+            if counter*batch_size >= display_threshold:
+                print(f'Images {counter*batch_size}/{total_datas}. Average i/s {np.mean(batch_size/np.array(iter_times[-display_every:]))}')
+                display_threshold+=display_every
 
-    return results, iter_times
+            counter+=1
+            # only test 10 times
+            if counter == 10:
+                break
+        iter_times = np.array(iter_times)
+        acc_tpu = np.sum(np.array(actual_labels) == np.array(pred_labels))/len(actual_labels)
+        results = pd.DataFrame(columns = [f'tpu_{model_type}_{batch_size}'])
+        results.loc['batch_size']              = [batch_size]
+        results.loc['accuracy']                = [acc_tpu]
+        results.loc['first_prediction_time']   = [first_iter_time]
+        results.loc['average_prediction_time'] = [np.mean(iter_times)]
+        results.loc['load_time']               = [load_time]
+        results.loc['wall_time']               = [time.time() - walltime_start]
+
+        return results, iter_times
 
 
 results = pd.DataFrame()
