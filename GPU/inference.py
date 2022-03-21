@@ -48,6 +48,9 @@ model_type = "resnet50"
 batch_list = [1]
 
 os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
+physical_devices = tf.config.experimental.list_physical_devices('GPU')
+if len(physical_devices) > 0:
+   tf.config.experimental.set_memory_growth(physical_devices[0], True)
 gpus = tf.config.experimental.list_physical_devices('GPU')
 if gpus:
     try:
