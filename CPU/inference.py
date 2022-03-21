@@ -44,7 +44,7 @@ models = {
 #     'mobilenet_v2':mobilenet_v2,
 #     'efficientnet_b7':efficientnet
 }
-model_type = "model/vgg16"
+model_type = "vgg16"
 batch_list = [1]
 
 def deserialize_image_record(record):
