@@ -10,7 +10,7 @@ from tensorflow.keras.applications import (
     vgg16,
 #     vgg19,
 #     resnet,
-#     resnet50,
+    resnet50,
 #     resnet_v2,
 #     inception_v3,
 #     inception_resnet_v2,
@@ -27,7 +27,7 @@ models = {
 #     'xception':xception,
     'vgg16':vgg16,
 #     'vgg19':vgg19,
-#     'resnet50':resnet50,
+    'resnet50':resnet50,
 #     'resnet101':resnet,
 #     'resnet152':resnet,
 #     'resnet50_v2':resnet_v2,
@@ -44,7 +44,7 @@ models = {
 #     'mobilenet_v2':mobilenet_v2,
 #     'efficientnet_b7':efficientnet
 }
-model_type = "vgg16"
+model_type = "resnet50"
 batch_list = [1]
 
 gpus = tf.config.experimental.list_physical_devices('GPU')
