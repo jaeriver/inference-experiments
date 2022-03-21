@@ -47,6 +47,7 @@ models = {
 model_type = "resnet50"
 batch_list = [1]
 
+os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
 gpus = tf.config.experimental.list_physical_devices('GPU')
 if gpus:
     try:
