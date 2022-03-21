@@ -44,8 +44,16 @@ models = {
 #     'mobilenet_v2':mobilenet_v2,
 #     'efficientnet_b7':efficientnet
 }
-model_type = "resnet50"
-batch_list = [1]
+parser = argparse.ArgumentParser()
+parser.add_argument('-m','--model_type', required=True)
+print(parser)
+parser.add_argument('-l', '--batch_list',
+                      nargs='+',
+                      required=True)
+
+model_type = parser.parse_args().model_type
+batch_list = parser.parse_args().batch_list
+
 
 def deserialize_image_record(record):
     feature_map = {'image/encoded': tf.io.FixedLenFeature([], tf.string, ''),
