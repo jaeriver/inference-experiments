@@ -130,10 +130,10 @@ def inference(saved_model_name, batch_size):
         for batch, batch_labels in ds:
             if counter == 0:
                 for i in range(warm_up):
-                    _ = model(batch)
+                    _ = model.predict(batch)
 
             start_time = time.time()
-            yhat_np = model(batch)
+            yhat_np = model.predict(batch)
             if counter ==0:
                 first_iter_time = time.time() - start_time
             else:
