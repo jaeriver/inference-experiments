@@ -44,7 +44,7 @@ models = {
 #     'mobilenet_v2':mobilenet_v2,
 #     'efficientnet_b7':efficientnet
 }
-model_type = "resnet50"
+model_type = "vgg16"
 batch_list = [1]
 
 gpu_devices = tf.config.experimental.list_physical_devices('GPU')
