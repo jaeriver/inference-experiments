@@ -24,13 +24,11 @@ print(f"TensorFlow version: {tf.__version__}")
 results = None
 parser = argparse.ArgumentParser()
 parser.add_argument('--batchsize', default=8, type=int)
-parser.add_argument('--load_model',default=False , type=bool)
 args = parser.parse_args()
 batch_size = args.batchsize
-load_model = args.load_model
 
 
-def load_save_model(saved_model_dir = 'vgg16_saved_model'):
+def load_save_model(saved_model_dir = 'vgg16'):
     model = VGG16(weights='imagenet')
     shutil.rmtree(saved_model_dir, ignore_errors=True)
     model.save(saved_model_dir, include_optimizer=False, save_format='tf')
@@ -73,7 +71,7 @@ def val_preprocessing(record):
     return image, label, label_text
 
 def get_dataset(batch_size, use_cache=False):
-    data_dir = '/home/ubuntu/datasets/*'
+    data_dir = '/home/ubuntu/datasets/images-1000/*'
     files = tf.io.gfile.glob(os.path.join(data_dir))
     dataset = tf.data.TFRecordDataset(files)
     
@@ -91,9 +89,9 @@ def get_dataset(batch_size, use_cache=False):
 
 
 
-saved_model_dir = 'vgg16_saved_model' 
-if load_model : 
-    load_save_model(saved_model_dir)
+saved_model_dir = 'vgg16' 
+
+load_save_model(saved_model_dir)
 
 model = tf.keras.models.load_model(saved_model_dir)
 display_every = 5000
