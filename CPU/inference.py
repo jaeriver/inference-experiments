@@ -6,14 +6,14 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications import (
-#     xception,
+    xception,
     vgg16,
 #     vgg19,
 #     resnet,
     resnet50,
 #     resnet_v2,
-#     inception_v3,
-#     inception_resnet_v2,
+    inception_v3,
+    inception_resnet_v2,
 #     mobilenet,
 #     densenet,
 #     nasnet,
@@ -24,7 +24,7 @@ import sys
 import argparse
 
 models = {
-#     'xception':xception,
+    'xception':xception,
     'vgg16':vgg16,
 #     'vgg19':vgg19,
     'resnet50':resnet50,
@@ -33,8 +33,8 @@ models = {
 #     'resnet50_v2':resnet_v2,
 #     'resnet101_v2':resnet_v2,
 #     'resnet152_v2':resnet_v2,
-#     'inception_v3':inception_v3,
-#     'inception_resnet_v2':inception_resnet_v2,
+    'inception_v3':inception_v3,
+    'inception_resnet_v2':inception_resnet_v2,
 #     'mobilenet':mobilenet,
 #     'densenet121':densenet,
 #     'densenet169':densenet,
