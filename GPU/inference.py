@@ -126,7 +126,7 @@ def inference(saved_model_name, batch_size):
     model = load_model(saved_model_name)
     load_time = time.time() - load_start
     counter = 0
-    with tf.device("/device:GPU:0"):
+    with tf.device("/device:GPU:1"):
         for batch, batch_labels in ds:
             if counter == 0:
                 for i in range(warm_up):
