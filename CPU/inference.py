@@ -141,9 +141,6 @@ def inference(saved_model_name, batch_size):
             display_threshold+=display_every
 
         counter+=1
-        # only test 10 times
-        if counter == 10:
-            break
     iter_times = np.array(iter_times)
     acc_tpu = np.sum(np.array(actual_labels) == np.array(pred_labels))/len(actual_labels)
     results = pd.DataFrame(columns = [f'tpu_{model_type}_{batch_size}'])
