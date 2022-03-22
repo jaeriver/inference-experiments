@@ -84,7 +84,7 @@ def val_preprocessing(record):
     new_width = tf.cast(tf.math.rint(width * scale), tf.int32)
     
     image = tf.image.resize(image, [new_height, new_width], method='bicubic')
-    if "inception" in model_type || "xception" in model_type:
+    if "inception" in model_type or "xception" in model_type:
         image = tf.image.resize_with_crop_or_pad(image, 299, 299)
     else:
         image = tf.image.resize_with_crop_or_pad(image, 224, 224)
