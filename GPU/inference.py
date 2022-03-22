@@ -54,7 +54,13 @@ parser.add_argument('-l', '--batch_list',
 
 model_type = parser.parse_args().model_type
 batch_list = parser.parse_args().batch_list
-
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    try:
+        tf.config.experimental.set_memory_growth(gpus[0], True)
+    except RuntimeError as e:
+        print(e)
 
 def deserialize_image_record(record):
     feature_map = {'image/encoded': tf.io.FixedLenFeature([], tf.string, ''),
